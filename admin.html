@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Srfds.cuts - Διαχείριση Ωρών</title>
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
+    h1 { color: #444; }
+    label, input, select, button { display: block; margin-top: 10px; width: 100%; }
+    ul { margin-top: 10px; padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Διαχείριση Διαθέσιμων Ωρών</h1>
+
+  <label>Ημέρα:</label>
+  <select id="day">
+    <option>Δευτέρα</option>
+    <option>Τρίτη</option>
+    <option>Τετάρτη</option>
+    <option>Πέμπτη</option>
+    <option>Παρασκευή</option>
+    <option>Σάββατο</option>
+    <option>Κυριακή</option>
+  </select>
+
+  <label>Ώρα (π.χ. 13:30):</label>
+  <input type="text" id="time">
+
+  <button onclick="addTime()">Προσθήκη Ώρας</button>
+
+  <h3>Ώρες ανά ημέρα:</h3>
+  <div id="output"></div>
+
+  <script>
+    const schedule = {
+      "Δευτέρα": [],
+      "Τρίτη": [],
+      "Τετάρτη": [],
+      "Πέμπτη": [],
+      "Παρασκευή": [],
+      "Σάββατο": [],
+      "Κυριακή": []
+    };
+
+    function addTime() {
+      const day = document.getElementById("day").value;
+      const time = document.getElementById("time").value;
+      if (time) {
+        schedule[day].push(time);
+        document.getElementById("time").value = "";
+        renderSchedule();
+      }
+    }
+
+    function renderSchedule() {
+      const output = document.getElementById("output");
+      output.innerHTML = "";
+      for (const day in schedule) {
+        const times = schedule[day];
+        if (times.length > 0) {
+          const list = document.createElement("ul");
+          list.innerHTML = `<strong>${day}:</strong>` + times.map(t => `<li>${t}</li>`).join("");
+          output.appendChild(list);
+        }
+      }
+    }
+  </script>
+</body>
+</html>

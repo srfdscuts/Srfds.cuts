@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Srfds.cuts - Κλείσε Ραντεβού</title>
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
+    h1 { color: #333; }
+    label, select, input { display: block; margin-top: 10px; width: 100%; }
+    button { margin-top: 20px; padding: 10px; background: black; color: white; border: none; }
+  </style>
+</head>
+<body>
+  <h1>Κλείσε Ραντεβού στο Srfds.cuts</h1>
+
+  <form id="booking-form">
+    <label>Όνομα:</label>
+    <input type="text" id="name" required>
+
+    <label>Τηλέφωνο:</label>
+    <input type="tel" id="phone" required>
+
+    <label>Ημέρα:</label>
+    <select id="day"></select>
+
+    <label>Ώρα:</label>
+    <select id="time"></select>
+
+    <button type="submit">Κλείσε Ραντεβού</button>
+  </form>
+
+  <p id="success" style="color: green;"></p>
+
+  <script>
+    const schedule = {
+      "Δευτέρα": ["10:00", "11:00", "12:00"],
+      "Τρίτη": ["14:00", "15:00"],
+      "Τετάρτη": [],
+      "Πέμπτη": ["13:00", "14:30"],
+      "Παρασκευή": ["09:00", "10:00"],
+      "Σάββατο": ["11:00", "12:00", "13:00"],
+      "Κυριακή": []
+    };
+
+    const daySelect = document.getElementById("day");
+    const timeSelect = document.getElementById("time");
+
+    // Γεμίζει τις μέρες
+    for (const day in schedule) {
+      if (schedule[day].length > 0) {
+        const option = document.createElement("option");
+        option.value = day;
+        option.textContent = day;
+        daySelect.appendChild(option);
+      }
+    }
+
+    function updateTimes() {
+      const selectedDay = daySelect.value;
+      const times = schedule[selectedDay];
+      timeSelect.innerHTML = "";
+      times.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t;
+        opt.textContent = t;
+        timeSelect.appendChild(opt);
+      });
+    }
+
+    daySelect.addEventListener("change", updateTimes);
+    updateTimes();
+
+    document.getElementById("booking-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const day = daySelect.value;
+      const time = timeSelect.value;
+
+      document.getElementById("success").textContent = `Το ραντεβού σου για ${day} στις ${time} καταχωρήθηκε! Ευχαριστούμε, ${name}.`;
+      this.reset();
+    });
+  </script>
+</body>
+</html>
